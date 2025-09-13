@@ -1,21 +1,24 @@
-export default function todoReducer(tasks, actions) {
+export default function todoReducer(draft, actions) {
   switch (actions.type) {
-    case "create":
-      return [...tasks, { id: actions.id, text: actions.text, done: false }];
+    case "create": {
+      const newTask = { id: actions.id, text: actions.text, done: false };
+      draft.push(newTask);
+      break;
+    }
+    case "update": {
+      const index = draft.findIndex((task) => task.id === actions.id);
+      draft[index] = { ...draft[index], text: actions.text };
+      break;
+    }
 
-    case "update":
-      return tasks.map((t) =>
-        t.id === actions.id ? { ...t, text: actions.text } : t
-      );
-
-    case "delete":
-      return tasks.filter((task) => task.id !== actions.id);
-
-    case "toggleDone":
-      return tasks.map((t) =>
-        t.id === actions.id ? { ...t, done: !t.done } : t
-      );
-
+    case "delete": {
+      return draft.filter((task) => task.id !== actions.id);
+    }
+    case "toggleDone": {
+      const index = draft.findIndex((task) => task.id === actions.id);
+      draft[index] = { ...draft[index], done: !draft[index].done };
+      break;
+    }
     default:
       throw Error(`Unknown action: ${actions.type}`);
   }
