@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import AddTask from "./components/AddTask";
 import TaskList from "./components/TaskList";
 import { initialTasks } from "./constant/data";
+import todoReducer from "./reducers/todoReducer";
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, dispatch] = useReducer(todoReducer, initialTasks);
 
   const getNextId = (data) => {
     let id = data.reduce((prev, current) =>
@@ -15,29 +16,33 @@ function App() {
   };
 
   const handleAddTask = (text) => {
-    const newTask = { id: getNextId(tasks), text: text, done: false };
-    setTasks((prev) => [...prev, newTask]);
+    dispatch({
+      type: "create",
+      id: getNextId(tasks),
+      text,
+    });
   };
 
   const handleUpdateTask = (taskId, updatedText) => {
-    const nextTasks = tasks.map((t) =>
-      t.id === taskId ? { ...t, text: updatedText } : t
-    );
-
-    setTasks(nextTasks);
+    dispatch({
+      type: "update",
+      id: taskId,
+      text: updatedText,
+    });
   };
 
   const handleDeleteTask = (id) => {
-    const nextTasks = tasks.filter((task) => task.id !== id);
-    setTasks(nextTasks);
+    dispatch({
+      type: "delete",
+      id,
+    });
   };
 
   const handleToggleDone = (id) => {
-    const nextTasks = tasks.map((t) =>
-      t.id === id ? { ...t, done: !t.done } : t
-    );
-
-    setTasks(nextTasks);
+    dispatch({
+      type: "toggleDone",
+      id,
+    });
   };
 
   return (
