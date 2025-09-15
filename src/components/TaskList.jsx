@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TasksContext } from "../contexts/TaskContext.jss";
+import { TasksContext } from "../contexts/TaskContext";
 import Task from "./Task";
 
 function TaskList() {
