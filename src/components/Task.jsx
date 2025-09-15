@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TasksDispatchContext } from "../contexts/TaskContext.jss";
 
-function Task({ task, onUpdate, onDelete, onToggleDone }) {
+function Task({ task }) {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTask, setUpdatedTask] = useState(task.text);
-
+  const dispatch = useContext(TasksDispatchContext);
   let renderTask;
 
   if (isEditing) {
@@ -17,7 +18,11 @@ function Task({ task, onUpdate, onDelete, onToggleDone }) {
         />
         <button
           onClick={() => {
-            onUpdate(task.id, updatedTask);
+            dispatch({
+              type: "UPDATE",
+              id: task.id,
+              text: updatedTask,
+            });
             setIsEditing(false);
           }}
           className="button"
@@ -33,7 +38,15 @@ function Task({ task, onUpdate, onDelete, onToggleDone }) {
         <button onClick={() => setIsEditing(true)} className="button">
           Edit
         </button>
-        <button onClick={() => onDelete(task.id)} className="button">
+        <button
+          onClick={() =>
+            dispatch({
+              type: "DELETE",
+              id: task.id,
+            })
+          }
+          className="button"
+        >
           Delete
         </button>
       </>
@@ -45,7 +58,12 @@ function Task({ task, onUpdate, onDelete, onToggleDone }) {
       <input
         type="checkbox"
         checked={task.done}
-        onChange={() => onToggleDone(task.id)}
+        onChange={() =>
+          dispatch({
+            type: "TOGGLE_DONE",
+            id: task.id,
+          })
+        }
       />
 
       {renderTask}

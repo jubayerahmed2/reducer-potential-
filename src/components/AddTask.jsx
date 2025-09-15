@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TasksDispatchContext } from "../contexts/TaskContext.jss";
 
-function AddTask({ onAdd }) {
+function AddTask() {
   const [text, setText] = useState("");
+  const dispatch = useContext(TasksDispatchContext);
+
   return (
     <div>
       <input
@@ -12,7 +15,10 @@ function AddTask({ onAdd }) {
       />
       <button
         onClick={() => {
-          onAdd(text);
+          dispatch({
+            type: "CREATE",
+            text,
+          });
           setText("");
         }}
         className="button"
