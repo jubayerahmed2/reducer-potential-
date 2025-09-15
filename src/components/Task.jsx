@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
-import { TasksDispatchContext } from "../contexts/TaskContext";
+import { useState } from "react";
+import { useDispatch } from "../contexts/TaskContext";
 
 function Task({ task }) {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTask, setUpdatedTask] = useState(task.text);
-  const dispatch = useContext(TasksDispatchContext);
+  const dispatch = useDispatch();
   let renderTask;
 
   if (isEditing) {

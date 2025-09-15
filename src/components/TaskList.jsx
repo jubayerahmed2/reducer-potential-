@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { TasksContext } from "../contexts/TaskContext";
+import { useTask } from "../contexts/TaskContext";
 import Task from "./Task";
 
 function TaskList() {
-  const tasks = useContext(TasksContext);
+  const tasks = useTask();
   return (
     <div className="space-y-3 mt-3">
       {tasks.map((task) => (

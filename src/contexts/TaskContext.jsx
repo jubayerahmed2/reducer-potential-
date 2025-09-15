@@ -1,10 +1,10 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialTasks } from "../constant/data";
 import todoReducer from "../reducers/todoReducer";
 
-export const TasksContext = createContext(null);
-export const TasksDispatchContext = createContext(null);
+const TasksContext = createContext(null);
+const TasksDispatchContext = createContext(null);
 
 export default function TaskProvider({ children }) {
   const [tasks, dispatch] = useImmerReducer(todoReducer, initialTasks);
@@ -16,4 +16,12 @@ export default function TaskProvider({ children }) {
       </TasksDispatchContext.Provider>
     </TasksContext.Provider>
   );
+}
+
+export function useTask() {
+  return useContext(TasksContext);
+}
+
+export function useDispatch() {
+  return useContext(TasksDispatchContext);
 }
